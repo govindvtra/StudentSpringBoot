@@ -20,7 +20,11 @@ public class StudentController {
 
 	@Autowired
 	private StudentService studentService;
-
+        @GetMapping("/")
+	public String Welcome(){
+		return "{healthy:true}"
+			
+	}		
 	@GetMapping("/students/{studentId}/courses")
 	public List<Course> retrieveCoursesForStudent(@PathVariable String studentId) {
 		return studentService.retrieveCourses(studentId);
