@@ -22,7 +22,7 @@ public class StudentController {
 	private StudentService studentService;
         @GetMapping("/")
 	public String Welcome(){
-		return "{healthy:true}"
+		return "{healthy:true}" ;
 			
 	}		
 	@GetMapping("/students/{studentId}/courses")
