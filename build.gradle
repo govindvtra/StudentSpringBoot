@@ -3,7 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 }
-def buildNumber = System.getenv("BUILD_BUILDNUMBER") as Integer ?: 1
+def buildNumber = System.getenv("BUILD_BUILDID") as Integer ?: 1
 group = 'com.in28minutes.springboot'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
