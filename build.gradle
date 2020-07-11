@@ -5,7 +5,7 @@ plugins {
 }
 def buildNumber = System.getenv("BUILD_BUILDID") as Integer ?: 1
 group = 'com.in28minutes.springboot'
-version = '0.0.1-SNAPSHOT'
+version = buildNumber
 sourceCompatibility = '1.8'
 jar.archiveName="mljdemo.jar"
 jar.baseName=buildNumber
