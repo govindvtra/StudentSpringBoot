@@ -25,7 +25,7 @@ import com.in28minutes.springboot.model.Course;
 import com.in28minutes.springboot.service.StudentService;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = StudentController.class, secure = false)
+@WebMvcTest(value = StudentController.class)
 public class StudentControllerTest {
 
 	@Autowired
