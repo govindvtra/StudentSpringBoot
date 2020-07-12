@@ -9,6 +9,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+   tag: '$(Build.BuildId)'  
+
 steps:
 - task: Gradle@2
   inputs:
@@ -51,8 +54,8 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'Azure Container Registry'
-    repository: 'mljcontainreg'
+    repository: 'mljdemocontainer'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
-
+    tags: '$(tag)'
     
