@@ -32,3 +32,27 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
+- task: ArtifactoryGenericUpload@2
+  inputs:
+    artifactoryService: 'Jfrog'
+    specSource: 'taskConfiguration'
+    fileSpec: |
+      {
+        "files": [
+          {
+            "pattern": "$(Build.ArtifactStagingDirectory)/",
+            "target": "nuget-local/freshupload/"
+          }
+        ]
+      }
+    failNoOp: true    
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Azure Container Registry'
+    repository: 'mljcontainreg'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+
+    
