@@ -1,6 +1,8 @@
+FROM openjdk:8-jre-slim
+
 WORKDIR /home/gradle/src
 COPY . /home/gradle/src
-FROM openjdk:8-jre-slim
+
 
 EXPOSE 8080
 
