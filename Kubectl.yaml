@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: mlj-student
-        image: mljregistry.azurecr.io/mljdemocontainer
+        image: govindr007/mljapp
         imagePullPolicy: IfNotPresent
         ports:
         - name: liveness-port
