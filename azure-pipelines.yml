@@ -38,14 +38,14 @@ steps:
 
 - task: ArtifactoryGenericUpload@2
   inputs:
-    artifactoryService: 'Jfrog'
+    artifactoryService: 'jfrogservice'
     specSource: 'taskConfiguration'
     fileSpec: |
       {
         "files": [
           {
             "pattern": "$(Build.ArtifactStagingDirectory)/",
-            "target": "nuget-local/freshupload/"
+            "target": "nuget-local/javawebappjar/"
           }
         ]
       }
@@ -54,7 +54,7 @@ steps:
 - task: Docker@2
   inputs:
     containerRegistry: 'Azure Container Registry'
-    repository: 'mljdemocontainer'
+    repository: 'mljcontain'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     tags: '$(tag)'
@@ -68,5 +68,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'manifests'
+    ArtifactName: 'kubeyaml'
     publishLocation: 'Container'
