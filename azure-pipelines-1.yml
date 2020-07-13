@@ -60,10 +60,17 @@ stages:
           }
         failNoOp: true    
 
+    # - task: Docker@2
+    #   inputs:
+    #     containerRegistry: 'Azure Container Registry'
+    #     repository: 'mljdemocontainer'
+    #     command: 'buildAndPush'
+    #     Dockerfile: '**/Dockerfile'
+    #     tags: '$(tag)'
     - task: Docker@2
       inputs:
-        containerRegistry: 'Azure Container Registry'
-        repository: 'mljdemocontainer'
+        containerRegistry: 'Docker Hub'
+        repository: 'govindr007/mljapp'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
@@ -100,12 +107,20 @@ stages:
         namespace: 'default'
         secretType: 'dockerRegistry'
         secretName: 'mlj-secret'
-        dockerRegistryEndpoint: 'Azure Container Registry'
+        dockerRegistryEndpoint: 'Docker Hub'
+    # - task: KubernetesManifest@0
+    #   inputs:
+    #     action: 'deploy'
+    #     kubernetesServiceConnection: 'AKS'
+    #     namespace: 'default'
+    #     manifests: '$(System.ArtifactsDirectory)/Kubectl.yaml'
+    #     containers: 'mljregistry.azurecr.io/mljdemocontainer:$(tag)'
+    #     imagePullSecrets: 'mlj-secret'
     - task: KubernetesManifest@0
       inputs:
         action: 'deploy'
         kubernetesServiceConnection: 'AKS'
         namespace: 'default'
         manifests: '$(System.ArtifactsDirectory)/Kubectl.yaml'
-        containers: 'mljregistry.azurecr.io/mljdemocontainer:$(tag)'
+        containers: 'govindr007/mljapp:$(tag)'
         imagePullSecrets: 'mlj-secret'
