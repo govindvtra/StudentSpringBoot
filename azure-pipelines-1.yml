@@ -108,3 +108,4 @@ stages:
         namespace: 'default'
         manifests: '$(System.ArtifactsDirectory)/Kubectl.yaml'
         containers: 'mljregistry.azurecr.io/mljdemocontainer:$(tag)'
+        imagePullSecrets: 'mlj-secret'
