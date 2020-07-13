@@ -59,3 +59,14 @@ steps:
     Dockerfile: '**/Dockerfile'
     tags: '$(tag)'
     
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: ''
+    Contents: '**/*.yaml'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'manifests'
+    publishLocation: 'Container'
