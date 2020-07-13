@@ -21,7 +21,7 @@ spec:
       
       containers:
       - name: mlj-student
-        image: govindr007/mljapp
+        image: mljregistry.azurecr.io/mljdemocontainer
         imagePullPolicy: IfNotPresent
         resources:
           requests:
