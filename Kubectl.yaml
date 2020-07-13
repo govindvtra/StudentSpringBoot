@@ -23,32 +23,15 @@ spec:
       - name: mlj-student
         image: govindr007/mljapp
         imagePullPolicy: IfNotPresent
-        ports:
-        - name: liveness-port
-          containerPort: 8000
-        resources: #CHANGE
+        resources:
           requests:
             cpu: 100m
-            memory: 512Mi
+            memory: 128Mi
           limits:
-            cpu: 500m
-            memory: 1024Mi #256Mi 
-        readinessProbe:
-          httpGet:
-            path: /
-            port: liveness-port
-          failureThreshold: 5
-          periodSeconds: 10
-          initialDelaySeconds: 60
-        livenessProbe:
-          httpGet:
-            path: /
-            port: liveness-port
-          failureThreshold: 5
-          periodSeconds: 10
-          initialDelaySeconds: 60
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 8000
       imagePullSecrets:
       - name: mlj-secret 
 ---
