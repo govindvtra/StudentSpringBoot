@@ -13,60 +13,48 @@ variables:
    tag: '$(Build.BuildId)'  
 
 steps:
-- task: Gradle@2
-  inputs:
-    gradleWrapperFile: 'gradlew'
-    tasks: 'build'
-    publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
-    codeCoverageToolOption: 'JaCoCo'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    gradleOptions: '-Xmx3072m'
-    sonarQubeRunAnalysis: false
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'build/libs/'
-    Contents: '**/*.jar'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: Gradle@2
+      inputs:
+        gradleWrapperFile: 'gradlew'
+        tasks: 'build'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        codeCoverageToolOption: 'JaCoCo'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.8'
+        gradleOptions: '-Xmx3072m'
+        sonarQubeRunAnalysis: false
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'build/libs/'
+        Contents: '**/*.jar'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 
-- task: ArtifactoryGenericUpload@2
-  inputs:
-    artifactoryService: 'jfrogservice'
-    specSource: 'taskConfiguration'
-    fileSpec: |
-      {
-        "files": [
+    - task: ArtifactoryGenericUpload@2
+      inputs:
+        artifactoryService: 'Jfrog'
+        specSource: 'taskConfiguration'
+        fileSpec: |
           {
-            "pattern": "$(Build.ArtifactStagingDirectory)/",
-            "target": "nuget-local/javawebappjar/"
+            "files": [
+              {
+                "pattern": "$(Build.ArtifactStagingDirectory)/",
+                "target": "nuget-local/freshupload/"
+              }
+            ]
           }
-        ]
-      }
-    failNoOp: true    
+        failNoOp: true    
 
-- task: Docker@2
-  inputs:
-    containerRegistry: 'Azure Container Registry'
-    repository: 'mljcontain'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: '$(tag)'
-    
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: ''
-    Contents: '**/*.yaml'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'kubeyaml'
-    publishLocation: 'Container'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Azure Container Registry'
+        repository: 'mljdemocontainer'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: '$(tag)'
