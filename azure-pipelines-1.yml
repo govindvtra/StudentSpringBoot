@@ -6,7 +6,10 @@ resources:
 - repo: self
 
 variables:
-   tag: '$(Build.BuildId)'
+   tag: '$(Build.BuildId)'  
+   Jforg_Service_Connection: 'Jfrog'
+   ACR_Service_Connection: 'Azure Container Registry'
+   Repository: 'mljdemocontainer'
 
 stages:
 
@@ -15,14 +18,15 @@ stages:
 # Publish the K8S Files
 
 - stage: Build
-  displayName: Build image
+  displayName: Build 
   jobs:  
   - job: Build
-    displayName: Build
+    displayName: Build and Push to ACR
     pool:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Gradle@2
+      displayName: Gradle Build 
       inputs:
         gradleWrapperFile: 'gradlew'
         tasks: 'build'
@@ -34,20 +38,23 @@ stages:
         gradleOptions: '-Xmx3072m'
         sonarQubeRunAnalysis: false
     - task: CopyFiles@2
+      displayName: Copy jar to Staging Directory
       inputs:
         SourceFolder: 'build/libs/'
         Contents: '**/*.jar'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
+      displayName: Publish jar Artifact
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
 
     - task: ArtifactoryGenericUpload@2
+      displayName: Upload jar to Arifactory
       inputs:
-        artifactoryService: 'Jfrog'
+        artifactoryService: '$(Jforg_Service_Connection)'
         specSource: 'taskConfiguration'
         fileSpec: |
           {
@@ -61,9 +68,10 @@ stages:
         failNoOp: true    
 
     - task: Docker@2
+      displayName: Docker Build an Push to ACR
       inputs:
-        containerRegistry: 'Azure Container Registry'
-        repository: 'mljdemocontainer'
+        containerRegistry: '$(ACR_Service_Connection)'
+        repository: '$(Repository)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
@@ -75,11 +83,13 @@ stages:
     #     Dockerfile: '**/Dockerfile'
     #     tags: '$(tag)'
     - task: CopyFiles@2
+      displayName: Copy AKS Deployment yaml file
       inputs:
         SourceFolder: '$(System.DefaultWorkingDirectory)'
         Contents: '**/*.yaml'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
     - task: PublishBuildArtifacts@1
+      displayName: Publish AKS Deployment yaml file
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'manifests'
@@ -87,20 +97,22 @@ stages:
 
 
 - stage: Deploy
-  displayName: Deploy image
+  displayName: Deploy 
   jobs:  
   - job: Deploy
-    displayName: Deploy
+    displayName: Deploy ACR image to AKS cluster
     pool:
       vmImage: 'ubuntu-latest'
     steps:
     - task: DownloadPipelineArtifact@2
+      displayName: Download AKS Deployment yaml file 
       inputs:
         buildType: 'current'
         artifactName: 'manifests'
         itemPattern: '**/*.yaml'
         targetPath: '$(System.ArtifactsDirectory)'
     - task: KubernetesManifest@0
+      displayName: Create Image pull secret 
       inputs:
         action: 'createSecret'
         kubernetesServiceConnection: 'AKS'
@@ -109,6 +121,7 @@ stages:
         secretName: 'mlj-secret'
         dockerRegistryEndpoint: 'Azure Container Registry'
     - task: KubernetesManifest@0
+      displayName: Deploying to AKS Cluster
       inputs:
         action: 'deploy'
         kubernetesServiceConnection: 'AKS'
