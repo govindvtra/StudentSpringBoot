@@ -10,6 +10,8 @@ variables:
    Jforg_Service_Connection: 'Jfrog'
    ACR_Service_Connection: 'Azure Container Registry'
    Repository: 'mljdemocontainer'
+   Image_Pull_Secret: 'mlj-secret'
+   Image_Name : 'mljregistry.azurecr.io/mljdemocontainer'
 
 stages:
 
@@ -118,8 +120,8 @@ stages:
         kubernetesServiceConnection: 'AKS'
         namespace: 'default'
         secretType: 'dockerRegistry'
-        secretName: 'mlj-secret'
-        dockerRegistryEndpoint: 'Azure Container Registry'
+        secretName: '$(Image_Pull_Secret)'
+        dockerRegistryEndpoint: '$(Repository)'
     - task: KubernetesManifest@0
       displayName: Deploying to AKS Cluster
       inputs:
@@ -127,8 +129,8 @@ stages:
         kubernetesServiceConnection: 'AKS'
         namespace: 'default'
         manifests: '$(System.ArtifactsDirectory)/Kubectl.yaml'
-        containers: 'mljregistry.azurecr.io/mljdemocontainer:$(tag)'
-        imagePullSecrets: 'mlj-secret'
+        containers: '$(Image_Name):$(tag)'
+        imagePullSecrets: '$(Image_Pull_Secret)'
     # - task: KubernetesManifest@0
     #   inputs:
     #     action: 'deploy'
