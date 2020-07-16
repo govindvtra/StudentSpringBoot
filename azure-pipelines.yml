@@ -13,7 +13,7 @@ variables:
    tag: '$(Build.BuildId)'  
    Jforg_Service_Connection: 'Jfrog'
    ACR_Service_Connection: 'Azure Container Registry'
-   Image_Name: 'mljdemocontainer'
+   Repository: 'mljdemocontainer'
    
 steps:
     - task: Gradle@2
@@ -62,7 +62,7 @@ steps:
       displayName: Docker Build an Push to ACR
       inputs:
         containerRegistry: '$(ACR_Service_Connection)'
-        repository: '$(Image_Name)'
+        repository: '$(Repository)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
