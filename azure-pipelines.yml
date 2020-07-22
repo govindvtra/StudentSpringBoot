@@ -20,7 +20,11 @@ steps:
       inputs:
         SonarCloud: 'SonarCloud'
         organization: 'mljdemo'
-        scannerMode: 'Other'
+        scannerMode: 'CLI'
+        configMode: 'manual'
+        cliProjectKey: 'mljdemo'
+        cliProjectName: 'mljdemo'
+        cliSources: '.'
     - task: Gradle@2
       displayName: Gradle Build 
       inputs:
