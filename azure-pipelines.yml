@@ -25,6 +25,11 @@ steps:
         cliProjectKey: 'mljdemo'
         cliProjectName: 'mljdemo'
         cliSources: '.'
+        extraProperties: |
+          # Additional properties that will be passed to the scanner, 
+          # Put one key=value per line, example:
+          # sonar.exclusions=**/*.bin
+          sonar.exclusions=**/*.java
     - task: Gradle@2
       displayName: Gradle Build 
       inputs:
