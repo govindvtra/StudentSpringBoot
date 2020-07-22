@@ -16,6 +16,11 @@ variables:
    Repository: 'mljdemocontainer'
    
 steps:
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'SonarCloud'
+        organization: 'mljdemo'
+        scannerMode: 'Other'
     - task: Gradle@2
       displayName: Gradle Build 
       inputs:
@@ -28,6 +33,7 @@ steps:
         jdkVersionOption: '1.8'
         gradleOptions: '-Xmx3072m'
         sonarQubeRunAnalysis: false
+    - task: SonarCloudAnalyze@1
     - task: CopyFiles@2
       displayName: Copy jar to Staging Directory
       inputs:
@@ -42,27 +48,27 @@ steps:
         ArtifactName: 'drop'
         publishLocation: 'Container'
 
-    - task: ArtifactoryGenericUpload@2
-      displayName: Upload jar to Arifactory
-      inputs:
-        artifactoryService: '$(Jforg_Service_Connection)'
-        specSource: 'taskConfiguration'
-        fileSpec: |
-          {
-            "files": [
-              {
-                "pattern": "$(Build.ArtifactStagingDirectory)/",
-                "target": "nuget-local/freshupload/"
-              }
-            ]
-          }
-        failNoOp: true    
+    # - task: ArtifactoryGenericUpload@2
+    #   displayName: Upload jar to Arifactory
+    #   inputs:
+    #     artifactoryService: '$(Jforg_Service_Connection)'
+    #     specSource: 'taskConfiguration'
+    #     fileSpec: |
+    #       {
+    #         "files": [
+    #           {
+    #             "pattern": "$(Build.ArtifactStagingDirectory)/",
+    #             "target": "nuget-local/freshupload/"
+    #           }
+    #         ]
+    #       }
+    #     failNoOp: true    
 
-    - task: Docker@2
-      displayName: Docker Build an Push to ACR
-      inputs:
-        containerRegistry: '$(ACR_Service_Connection)'
-        repository: '$(Repository)'
-        command: 'buildAndPush'
-        Dockerfile: '**/Dockerfile'
-        tags: '$(tag)'
+    # - task: Docker@2
+    #   displayName: Docker Build an Push to ACR
+    #   inputs:
+    #     containerRegistry: '$(ACR_Service_Connection)'
+    #     repository: '$(Repository)'
+    #     command: 'buildAndPush'
+    #     Dockerfile: '**/Dockerfile'
+    #     tags: '$(tag)'
