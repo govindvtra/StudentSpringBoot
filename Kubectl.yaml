@@ -7,11 +7,11 @@ spec:
   selector:
     matchLabels:
       app: mlj-student
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
+#   strategy:
+#     rollingUpdate:
+#       maxSurge: 25%
+#       maxUnavailable: 25%
+#     type: RollingUpdate
 
   template:
     metadata:
