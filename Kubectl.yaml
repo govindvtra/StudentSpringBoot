@@ -31,7 +31,7 @@ spec:
             cpu: 250m
             memory: 256Mi
         ports:
-        - containerPort: 8000
+        - containerPort: 8080
       imagePullSecrets:
       - name: mlj-secret 
 ---
@@ -45,9 +45,9 @@ metadata:
 spec:
   ports:
   - # nodePort: 30702 #CHANGE
-    port: 8000 #CHANGE
+    port: 8080 #CHANGE
     protocol: TCP
-    targetPort: 8000 #CHANGE
+    targetPort: 8080 #CHANGE
   selector:
     app: mlj-student
   sessionAffinity: None #CHANGE
