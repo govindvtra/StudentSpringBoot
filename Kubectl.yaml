@@ -20,7 +20,7 @@ spec:
     spec:
       
       containers:
-      - name: mlj-student
+      - name: mlj-student-cicd
         image: mljregistry.azurecr.io/mljdemocontainer
         imagePullPolicy: IfNotPresent
         resources:
