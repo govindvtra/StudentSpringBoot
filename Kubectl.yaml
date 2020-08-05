@@ -57,8 +57,8 @@ spec:
           configMap:
             name: demo
             items:
-              - key: pom
-                path: "pom.xml"
+              - key: pom.xml
+                path: "pom"
       imagePullSecrets:
       - name: mlj-secret 
 ---
