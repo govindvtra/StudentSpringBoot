@@ -122,7 +122,7 @@ stages:
         namespace: 'default'
         secretType: 'dockerRegistry'
         secretName: '$(Image_Pull_Secret)'
-        dockerRegistryEndpoint: '$(Repository)'
+        dockerRegistryEndpoint: 'Azure Container Registry'
     - task: KubernetesManifest@0
       displayName: Deploying to AKS Cluster
       inputs:
