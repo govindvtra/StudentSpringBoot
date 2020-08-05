@@ -39,6 +39,7 @@ spec:
       containers:
       - name: mlj-student-cicd
         image: mljregistry.azurecr.io/mljdemocontainer
+        command: [ "/bin/sh","-c","cp /etc/config/Dockerfile /usr/local/tomcat/conf/" ]
         imagePullPolicy: IfNotPresent
         resources:
           requests:
