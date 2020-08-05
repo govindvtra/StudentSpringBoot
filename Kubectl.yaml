@@ -39,7 +39,7 @@ spec:
       containers:
       - name: mlj-student-cicd
         image: mljregistry.azurecr.io/mljdemocontainer
-        command: [ "/bin/sh","-c","cp /etc/config/Dockerfile /usr/local/tomcat/conf/" ]
+#         command: [ "/bin/sh","-c","cp /etc/config/Dockerfile /usr/local/tomcat/conf/" ]
         imagePullPolicy: IfNotPresent
         resources:
           requests:
@@ -52,7 +52,7 @@ spec:
         - containerPort: 8080
         volumeMounts:
         - name: config
-          mountPath: "/etc/config"
+          mountPath: "conf/"
       volumes:
         - name: config
           configMap:
