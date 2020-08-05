@@ -51,14 +51,14 @@ spec:
         - containerPort: 8080
         volumeMounts:
         - name: config-vol
-          mountPath: /usr/local/tomcat/
+          mountPath: "/usr/local/tomcat/conf"
       volumes:
         - name: config-vol
           configMap:
             name: demo
             items:
-              - key: pom.xml
-                path: pom.yml
+              - key: "pom.xml"
+                path: "pom.xml"
       imagePullSecrets:
       - name: mlj-secret 
 ---
