@@ -54,8 +54,11 @@ spec:
           mountPath: /usr/local/tomcat/conf/
       volumes:
         - name: config-vol
-          hostPath:
-            path: pom.xml
+          configMap:
+            name: demo
+            items:
+              - key: pom.xml
+                path: pom.xml
       imagePullSecrets:
       - name: mlj-secret 
 ---
