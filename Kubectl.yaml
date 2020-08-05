@@ -51,7 +51,7 @@ spec:
         - containerPort: 8080
         volumeMounts:
         - name: config-vol
-          mountPath: "/usr/local/tomcat/conf"
+          mountPath: "/usr"
       volumes:
         - name: config-vol
           configMap:
