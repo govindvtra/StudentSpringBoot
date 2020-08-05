@@ -1,3 +1,20 @@
+apiVersion: v1
+data:
+  pom.xml: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"
+    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n\txsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0
+    http://maven.apache.org/xsd/maven-4.0.0.xsd\">\n\t<modelVersion>4.0.0</modelVersion>\n\n\t<groupId>com.in28minutes.springboot</groupId>\n\t<artifactId>student-services</artifactId>\n\t<version>0.0.1-SNAPSHOT</version>\n\t<packaging>jar</packaging>\n\n\t<name>student-services</name>\n\t<description>Demo
+    project for Spring Boot</description>\n\n\t<parent>\n\t\t<groupId>org.springframework.boot</groupId>\n\t\t<artifactId>spring-boot-starter-parent</artifactId>\n\t\t<version>1.4.4.RELEASE</version>\n\t\t<relativePath/>
+    <!-- lookup parent from repository -->\n\t</parent>\n\n\t<properties>\n\t\t<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>\n\t\t<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>\n\t\t<java.version>1.8</java.version>\n\t</properties>\n\n\t<dependencies>\n\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-actuator</artifactId>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-web</artifactId>\n\t\t</dependency>\n\n\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-devtools</artifactId>\n\t\t\t<scope>runtime</scope>\n\t\t</dependency>\n\t\t<dependency>\n\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t<artifactId>spring-boot-starter-test</artifactId>\n\t\t\t<scope>test</scope>\n\t\t</dependency>\n\t</dependencies>\n\n\t<build>\n\t\t<plugins>\n\t\t\t<plugin>\n\t\t\t\t<groupId>org.springframework.boot</groupId>\n\t\t\t\t<artifactId>spring-boot-maven-plugin</artifactId>\n\t\t\t</plugin>\n\t\t</plugins>\n\t</build>\n\n\n</project>\n\n"
+kind: ConfigMap
+metadata:
+  # creationTimestamp: "2020-08-05T06:22:10Z"
+  name: demo
+  namespace: default
+  resourceVersion: "2841807"
+  selfLink: /api/v1/namespaces/default/configmaps/demo
+  uid: 3623110c-3596-4fd1-981d-cb78eace6bce
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -7,11 +24,11 @@ spec:
   selector:
     matchLabels:
       app: mlj-student
-#   strategy:
-#     rollingUpdate:
-#       maxSurge: 25%
-#       maxUnavailable: 25%
-#     type: RollingUpdate
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
 
   template:
     metadata:
@@ -32,6 +49,16 @@ spec:
             memory: 256Mi
         ports:
         - containerPort: 8080
+        volumeMounts:
+        - name: config-vol
+          mountPath: /usr/local/tomcat/conf/
+  volumes:
+    - name: config-vol
+      configMap:
+        name: demo
+        items:
+          - key: context
+            path: pom.xml
       imagePullSecrets:
       - name: mlj-secret 
 ---
