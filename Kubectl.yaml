@@ -49,16 +49,16 @@ spec:
             memory: 256Mi
         ports:
         - containerPort: 8080
-#         volumeMounts:
-#         - name: config-vol
-#           mountPath: /usr/local/tomcat/conf/
-#       volumes:
-#         - name: config-vol
-#           configMap:
-#             name: demo
-#             items:
-#               - key: context
-#                 path: pom.xml
+        volumeMounts:
+        - name: config-vol
+          mountPath: /usr/local/tomcat/conf/
+      volumes:
+        - name: config-vol
+          configMap:
+            name: demo
+            items:
+              - key: context
+                path: pom.xml
       imagePullSecrets:
       - name: mlj-secret 
 ---
