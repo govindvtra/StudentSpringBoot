@@ -52,7 +52,8 @@ spec:
         - containerPort: 8080
         volumeMounts:
         - name: config
-          mountPath: "conf/"
+          mountPath: "/usr/local/tomcat/conf/Dockerfile"
+          subPath: Dockerfile
       volumes:
         - name: config
           configMap:
