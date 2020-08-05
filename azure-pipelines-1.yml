@@ -54,21 +54,21 @@ stages:
         ArtifactName: 'drop'
         publishLocation: 'Container'
 
-    - task: ArtifactoryGenericUpload@2
-      displayName: Upload jar to Arifactory
-      inputs:
-        artifactoryService: '$(Jforg_Service_Connection)'
-        specSource: 'taskConfiguration'
-        fileSpec: |
-          {
-            "files": [
-              {
-                "pattern": "$(Build.ArtifactStagingDirectory)/",
-                "target": "nuget-local/freshupload/"
-              }
-            ]
-          }
-        failNoOp: true    
+    # - task: ArtifactoryGenericUpload@2
+    #   displayName: Upload jar to Arifactory
+    #   inputs:
+    #     artifactoryService: '$(Jforg_Service_Connection)'
+    #     specSource: 'taskConfiguration'
+    #     fileSpec: |
+    #       {
+    #         "files": [
+    #           {
+    #             "pattern": "$(Build.ArtifactStagingDirectory)/",
+    #             "target": "nuget-local/freshupload/"
+    #           }
+    #         ]
+    #       }
+    #     failNoOp: true    
 
     - task: Docker@2
       displayName: Docker Build an Push to ACR
