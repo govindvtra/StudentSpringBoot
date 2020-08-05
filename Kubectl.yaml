@@ -58,7 +58,7 @@ spec:
             name: demo
             items:
               - key: pom.xml
-                path: pom.xml
+                path: pom.yml
       imagePullSecrets:
       - name: mlj-secret 
 ---
