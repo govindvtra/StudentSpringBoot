@@ -13,6 +13,18 @@ jar.baseName=buildNumber
 repositories {
 	mavenCentral()
 	jcenter() 
+	maven {
+              url 'https://pkgs.dev.azure.com/mljpractice/_packaging/mljpractice%40Local/maven/v1'
+              name 'mljpractice@Local'
+              authentication {
+                      basic(BasicAuthentication)
+              }
+	      credentials(PasswordCredentials){
+	              username='mljpractice'
+		      password='4h6j4i62x4vzaf3vlrhxhix62rw7bwhiosx6reo4yvgggvi4pj5a'
+	      }	      
+		      
+        }
 }
 
 jar {
