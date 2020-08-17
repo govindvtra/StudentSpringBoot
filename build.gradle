@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.3.1.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id "net.linguica.maven-settings" version "0.5"
 }
 def buildNumber = System.getenv("BUILD_BUILDID") as Integer ?: 1
 group = 'com.in28minutes.springboot'
