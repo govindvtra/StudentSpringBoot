@@ -32,8 +32,8 @@ publishing {
 	
     publications {
         maven(MavenPublication) {
-            groupId = 'com.gov.springboot'
-            artifactId = 'sample'
+            groupId = 'com.in28minutes.springboot'
+            artifactId = 'mljdemo'
             version = buildNumber
             from components.java
 
