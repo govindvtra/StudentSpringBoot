@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 	id "net.linguica.maven-settings" version "0.5"
+	id 'maven-publish'
 }
 def buildNumber = System.getenv("BUILD_BUILDID") as Integer ?: 1
 group = 'com.in28minutes.springboot'
@@ -11,10 +12,10 @@ sourceCompatibility = '1.8'
 jar.archiveName="mljdemo.jar"
 jar.baseName=buildNumber
 
-repositories {
-	mavenCentral()
-	jcenter() 
-	maven {
+
+publishing {
+  repositories {  
+    maven {
                url 'https://pkgs.dev.azure.com/mljpractice/mlj-template-demo/_packaging/mlj-artifacts/maven/v1'
                name 'mlj-artifacts'
                authentication {
@@ -27,6 +28,23 @@ repositories {
 	      }	      
 		      
         }
+  }	
+	
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.gov.springboot'
+            artifactId = 'sample'
+            version = buildNumber
+            from components.java
+
+           
+        }
+    }
+}
+repositories {
+	mavenCentral()
+	jcenter() 
+	
 }
 
 jar {
